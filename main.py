@@ -88,14 +88,19 @@ def load():
     wb = openpyxl.load_workbook('maps.xlsx')
     ws = wb[name]
     i=1
-    while not(ws.cell(row=i, column=0+1).value)==None:
+    while True:
         exponats.append(exponat(ws.cell(row=i, column=2+1).value,ws.cell(row=i, column=3+1).value, 50,50, ws.cell(row=i, column=0+1).value, ws.cell(row=i, column=1+1).value))
         exponats[-1].emotions = [ws.cell(row=i, column=4+1).value, ws.cell(row=i, column=5+1).value, ws.cell(row=i, column=6+1).value, ws.cell(row=i, column=7+1).value, ws.cell(row=i, column=8+1).value, ws.cell(row=i, column=9+1).value]
         exponats[-1].freq = ws.cell(row=i, column=10+1).value
         i+=1
+        if (ws.cell(row=i, column=0+1).value)==None:
+            break
     i=1
-    while not(ws.cell(row=i, column=11+1).value)==None:
+    while True:
         walls.append(wall(ws.cell(row=i, column=11+1).value, ws.cell(row=i, column=12+1).value, ws.cell(row=i, column=13+1).value, ws.cell(row=i, column=14+1).value))
+        i += 1
+        if (ws.cell(row=i, column=11+1).value)==None:
+            break
     wb.save('maps.xlsx')
 
 
@@ -221,8 +226,8 @@ class Ui_MainWindow(object):
         thr1 = threading.Thread(target=save, name='t1')
         thr1.start()
     def loadstream(self):
-        thr2 = threading.Thread(target=load, name='t2')
-        thr2.start()
+        thr1 = threading.Thread(target=load, name='t1')
+        thr1.start()
     def mode1(self):
         global mode
         mode = 1
